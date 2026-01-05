@@ -1,0 +1,288 @@
+Task Manager Backend:
+
+A backend API system built using Django REST Framework with:
+
+✅ JWT Authentication
+✅ Role-Based Permissions
+✅ Task CRUD APIs
+✅ Filtering + Sorting + Pagination
+✅ Activity Logs
+✅ Celery Scheduled Jobs
+✅ Redis Queue
+✅ Docker Support
+
+Designed like real-world backend architecture used in companies.
+
+📌 Table of Contents
+
+--Features
+
+--Tech Stack
+
+--Project Architecture
+
+--Installation
+
+--Environment Setup
+
+--Running The Project
+
+--Authentication Flow
+
+--API Endpoints
+
+--Filtering & Pagination
+
+--Activity Logs
+
+--Celery & Redis Automation
+
+--Troubleshooting
+
+--Developer
+
+  Features:
+
+--🔐 Authentication--
+
+-JWT Login
+
+-Access + Refresh Tokens
+
+-Role-based user permissions
+
+-Admin
+
+-Intern
+
+--📦 Task Management Module--
+
+--Supports complete CRUD:
+
+-Create Task
+
+-Update Task
+
+-Delete Task
+
+-View Tasks
+
+-Assigned to user
+
+-Tracks due dates
+
+--Statuses--
+
+-PENDING
+-IN_PROGRESS
+-COMPLETED
+-OVERDUE
+
+
+--Priorities--
+
+-LOW
+-MEDIUM
+-HIGH
+
+📜 Activity Log System
+
+Every action logs automatically:
+
+Who changed?
+
+What changed?
+
+Old value
+
+New value
+
+Exact timestamp
+
+⏰ Celery Automation
+
+A scheduled job runs every X seconds and:
+
+Checks overdue tasks
+
+Automatically updates their status to OVERDUE
+
+🛠 Tech Stack
+
+Backend Framework: Django
+API Layer: Django REST Framework
+Auth: Simple JWT
+Background Jobs: Celery
+Message Broker / Queue: Redis
+Container: Docker (optional)
+Database: SQLite (default)
+
+🏗 Project Architecture
+config/
+ ├── config/             # Core Django Project
+ ├── tasks/              # Task App
+ │   ├── models.py
+ │   ├── serializers.py
+ │   ├── views.py
+ │   ├── urls.py
+ │   ├── tasks_celery.py # Celery worker logic
+ │   └── migrations/
+ ├── users/              # User & Roles App
+ │   ├── models.py
+ │   ├── serializers.py
+ │   ├── views.py
+ │   └── urls.py
+ ├── celery.py           # Celery Config
+ ├── requirements.txt
+ └── manage.py
+
+
+This is industry standard architecture used in real companies.
+
+⚙️ Installation
+
+Move to project folder:
+
+cd config
+
+
+Create virtual environment:
+
+python -m venv venv
+
+
+Activate:
+
+venv\Scripts\activate
+
+
+Install dependencies:
+
+pip install django
+pip install djangorestframework
+pip install djangorestframework-simplejwt
+pip install django-filter
+pip install celery
+pip install redis
+
+
+Apply migrations:
+
+python manage.py migrate
+
+🔑 Create Super User (Admin)
+python manage.py createsuperuser
+
+
+Login Panel:
+
+http://127.0.0.1:8000/admin
+
+▶️ Running The Project
+1️⃣ Start Redis
+docker run -d -p 6379:6379 redis
+
+2️⃣ Start Django Server
+python manage.py runserver
+
+3️⃣ Start Celery Worker
+celery -A config worker -l info -P solo
+
+4️⃣ Start Celery Beat
+celery -A config beat -l info
+
+🔐 Authentication Flow
+Login
+POST /api/auth/login/
+
+
+Request:
+
+{
+  "username": "yourname",
+  "password": "yourpassword"
+}
+
+
+Response:
+
+{
+  "access": "token_here",
+  "refresh": "token_here"
+}
+
+Use Token
+
+Header:
+
+Authorization: Bearer ACCESS_TOKEN
+
+📡 API Endpoints
+Tasks
+Method	Endpoint	Description
+GET	/api/tasks/	Get all tasks
+GET	/api/tasks/<id>/	Get task
+POST	/api/tasks/	Create task
+PATCH	/api/tasks/<id>/	Update
+DELETE	/api/tasks/<id>/	Delete
+🔍 Filtering & Pagination
+Pagination
+/api/tasks/?page=2
+
+Filter by Status
+/api/tasks/?status=OVERDUE
+
+📝 Activity Logs
+GET /api/tasks/logs/
+
+
+Stores:
+
+user
+
+action
+
+old value
+
+new value
+
+timestamp
+
+⏰ Celery & Redis Automation
+
+Automatically executes:
+
+Every 30 seconds (or configured)
+
+
+Checks tasks:
+
+if due_date < today
+
+AND status != completed
+
+sets OVERDUE
+
+Logs changes automatically.
+
+🧯 Troubleshooting
+❌ Redis not running
+
+Run again:
+
+docker run -d -p 6379:6379 redis
+
+❌ Celery "unregistered task"
+
+Ensure worker started after server
+Restart Celery.
+
+❌ Token expired
+
+Re-login to generate new one.
+
+👨‍💻 Developer
+
+Built by Mithun
+Intern Backend Project
+Made with pain, debugging, learning, and victory 😎🔥
