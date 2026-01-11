@@ -21,7 +21,7 @@ Redis
 Docker (for Redis)
 
 📁 Project Structure
-
+'''
 config/
 │
 ├── config/                  # Main project configuration
@@ -49,7 +49,7 @@ config/
 ├── README.md
 └── venv/                    # Virtual environment 
 
-
+'''
 Setup Instructions:
 
 1️⃣ Clone the Repository
